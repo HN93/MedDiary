@@ -1,8 +1,11 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.db import models
+from django.contrib.auth.models import User
 
 
-class User(models.Model):
+class Profile(models.Model):
     MALE = 'M'
     FEMALE = 'F'
     GENDER_CHOICES = (
@@ -15,9 +18,10 @@ class User(models.Model):
     gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, default=None)
     description = models.TextField(blank=True, null=True, default=None)
     city = models.CharField(max_length=45, default=None)
-    mail = models.CharField(max_length=100, default=None)
+    mail = models.EmailField(max_length=100, default=None)
     password = models.CharField(max_length=30, null=False, blank=False, default=None)
     phone_number = models.IntegerField(null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, default=None)
 
     class Meta:
         abstract = True
@@ -26,10 +30,20 @@ class User(models.Model):
 class DoctorType(models.Model):
     name = models.CharField(max_length=20, null=True, blank=False)
 
+    class Meta:
+        verbose_name = 'DoctorType'
+        verbose_name_plural = 'DoctorType'
 
-class Doctor(User):
+
+class Doctor(Profile):
     type = models.ForeignKey(DoctorType, on_delete=models.CASCADE, null=True)
     name_of_organisation = models.CharField(max_length=50, null=True, blank=False)
+
+    @receiver(post_save, sender=User)
+    def new_user(sender, instance, created, **kwargs):
+        if created:
+            Doctor.objects.create(user=instance)
+        instance.doctor.save()
 
     def __str__(self):
         return '%s' % self.name
@@ -52,9 +66,17 @@ class Disease(models.Model):
         verbose_name_plural = 'Diseases'
 
 
-class Patient(User):
+class Patient(Profile):
     diseases = models.ManyToManyField(Disease)
     doctors = models.ManyToManyField(Doctor)
+    height = models.IntegerField(default=None)
+    weight = models.IntegerField(default=None)
+
+    @receiver(post_save, sender=User)
+    def new_user(sender, instance, created, **kwargs):
+        if created:
+            Patient.objects.create(user=instance)
+        instance.patient.save()
 
     def __str__(self):
         return '%s' % self.name
@@ -67,6 +89,9 @@ class Patient(User):
 class Indicator(models.Model):
     type = models.CharField(max_length=30)
     diseases = models.ManyToManyField(Disease)
+    class Meta:
+        verbose_name = 'Indicator'
+        verbose_name_plural = 'Indicators'
 
 
 class Measurement(models.Model):
@@ -77,19 +102,13 @@ class Measurement(models.Model):
 
 
 class Message(models.Model):
-    DOCTOR = 'D'
-    PATIENT = 'P'
-    Author_choice = (
-        (DOCTOR, 'Doctor'),
-        (PATIENT, 'Patient')
-    )
-    author = models.CharField('Author', choices=Author_choice, default=None, max_length=1)
-    doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE)
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    from_whom = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_whom', default=None)
+    to_whom = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_whom', default=None)
     message = models.TextField(default=None)
     pub_date = models.DateTimeField(default=timezone.now)
 
 
 class MeasurementFrequency(models.Model):
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
-    indicator = models.OneToOneField(Indicator, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    indicator = models.ForeignKey(Indicator, on_delete=models.CASCADE)
+    frequency = models.IntegerField(default=2)
