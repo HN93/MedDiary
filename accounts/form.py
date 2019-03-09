@@ -5,7 +5,6 @@ from database.models import DoctorType
 
 
 class SignUpFormDoctor(UserCreationForm):
-    email = forms.EmailField(max_length=254, help_text='Это поле обязательно')
     MALE = 'M'
     FEMALE = 'F'
     GENDER_CHOICES = (
@@ -14,15 +13,15 @@ class SignUpFormDoctor(UserCreationForm):
     )
     first_name = forms.CharField(max_length=45)
     last_name = forms.CharField(max_length=45)
-    dateOfBirthday = forms.DateField()
+    date_of_birthday = forms.DateField()
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
     city = forms.CharField(max_length=45)
-    password = forms.CharField(max_length=30)
     phone_number = forms.IntegerField()
-    type = forms.ModelChoiceField(queryset=DoctorType.objects.all())
     name_of_organisation = forms.CharField(max_length=50)
+    type = forms.ModelChoiceField(queryset=DoctorType.objects.all())
+    email = forms.EmailField(max_length=254)
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2', 'city', 'dateOfBirthday', 'gender',
-                  'phone_number', 'first_name', 'last_name', 'type', 'name_of_organisation')
+        fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'date_of_birthday', 'gender',
+                  'city', 'phone_number', 'name_of_organisation', 'type', 'email')

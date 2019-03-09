@@ -21,6 +21,6 @@ from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'^signup_doctor/$', views.signup_doctor, name='signup_doctor')
+    url(r'^signup_doctor/$', views.signup_doctor, name='signup_doctor')
 
 ]
