@@ -16,14 +16,13 @@ class SignUpFormDoctor(UserCreationForm):
     last_name = forms.CharField(max_length=45)
     dateOfBirthday = forms.DateField()
     gender = forms.ChoiceField(choices=GENDER_CHOICES)
-    description = forms.TextInput()
     city = forms.CharField(max_length=45)
     password = forms.CharField(max_length=30)
     phone_number = forms.IntegerField()
-    type = forms.ModelForm(DoctorType, )
+    type = forms.ModelChoiceField(queryset=DoctorType.objects.all())
     name_of_organisation = forms.CharField(max_length=50)
 
     class Meta:
         model = User
-        fields = ('username', 'city', 'password1', 'password2', 'dateOfBirthday', 'gender',
-                  'phone_number', 'description', 'first_name', 'last_name', 'type', 'name_of_organisation')
+        fields = ('username', 'password1', 'password2', 'city', 'dateOfBirthday', 'gender',
+                  'phone_number', 'first_name', 'last_name', 'type', 'name_of_organisation')
