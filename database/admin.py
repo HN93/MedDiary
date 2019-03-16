@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Patient, Doctor, Disease
+from .models import Patient, Doctor, Disease, DoctorType
 
 
 # Register your models here.
@@ -24,6 +24,14 @@ class DiseaseAdmin(admin.ModelAdmin):
         model = Disease
 
 
+class DoctorTypeAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in DoctorType._meta.fields]
+
+    class Meta:
+        model = DoctorType
+
+
 admin.site.register(Patient, PatientAdmin)
 admin.site.register(Doctor, DoctorAdmin)
 admin.site.register(Disease, DiseaseAdmin)
+admin.site.register(DoctorType, DoctorTypeAdmin)

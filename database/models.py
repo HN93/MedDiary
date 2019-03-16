@@ -12,41 +12,47 @@ class Profile(models.Model):
         (MALE, 'Male'),
         (FEMALE, 'Female')
     )
-    first_name = models.CharField(max_length=45, null=False, blank=False)
-    last_name = models.CharField(max_length=45, null=False, blank=False)
-    date_of_birthday = models.DateField(blank=False)
-    gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, default=None)
-    description = models.TextField(blank=True, null=True, default=None)
-    city = models.CharField(max_length=45, default=None)
-    mail = models.EmailField(max_length=100, default=None)
-    password = models.CharField(max_length=30, null=False, blank=False, default=None)
-    phone_number = models.IntegerField(null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, default=None)
+    date_of_birthday = models.DateField('date_of_birthday', null=True, blank=True)
+    gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, null=True, blank=True)
+    description = models.TextField('description', blank=True, null=True)
+    city = models.CharField('city', max_length=45, null=True, blank=True)
+    mail = models.EmailField('mail', max_length=100, null=True, blank=True)
+    phone_number = models.IntegerField('phone_number', null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    @receiver(post_save, sender=User)
+    def new_user(sender, instance, created, **kwargs):
+        if created:
+            Patient.objects.create(user=instance)
+        instance.patient.save()
 
     class Meta:
         abstract = True
 
 
 class DoctorType(models.Model):
-    name = models.CharField(max_length=20, null=True, blank=False)
+    name = models.CharField(max_length=20, null=True, blank=True)
 
     class Meta:
         verbose_name = 'DoctorType'
         verbose_name_plural = 'DoctorType'
 
-
-class Doctor(Profile):
-    type = models.ForeignKey(DoctorType, on_delete=models.CASCADE, null=True)
-    name_of_organisation = models.CharField(max_length=50, null=True, blank=False)
-
-    @receiver(post_save, sender=User)
-    def new_user(sender, instance, created, **kwargs):
-        if created:
-            Doctor.objects.create(user=instance)
-        instance.doctor.save()
-
     def __str__(self):
         return '%s' % self.name
+
+
+class Doctor(Profile):
+    type = models.ForeignKey(DoctorType, on_delete=models.CASCADE, null=True, blank=True)
+    name_of_organisation = models.CharField(max_length=50, null=True, blank=True)
+
+    # @receiver(post_save, sender=User)
+    # def new_user2(sender, instance, created, **kwargs):
+    #     if created:
+    #         Profile.objects.create(user=instance)
+    #     instance.doctor.save()
+
+    def __str__(self):
+        return '%s' % self.user.first_name
 
     class Meta:
         verbose_name = 'Doctor'
@@ -54,9 +60,9 @@ class Doctor(Profile):
 
 
 class Disease(models.Model):
-    name = models.CharField(max_length=25, null=False, blank=False)
-    doctorType = models.ForeignKey(DoctorType, default=None, on_delete=models.CASCADE)
-    symptoms = models.TextField(max_length=1000, default=None)
+    name = models.CharField(max_length=25, null=True, blank=True)
+    doctorType = models.ForeignKey(DoctorType, null=True, blank=True, on_delete=models.CASCADE)
+    symptoms = models.TextField(max_length=1000, null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.name
@@ -67,19 +73,19 @@ class Disease(models.Model):
 
 
 class Patient(Profile):
-    diseases = models.ManyToManyField(Disease)
-    doctors = models.ManyToManyField(Doctor)
-    height = models.IntegerField(default=None)
-    weight = models.IntegerField(default=None)
+    diseases = models.ManyToManyField(Disease, null=True, blank=True)
+    doctors = models.ManyToManyField(Doctor, null=True, blank=True)
+    height = models.IntegerField(null=True, blank=True)
+    weight = models.IntegerField(null=True, blank=True)
 
-    @receiver(post_save, sender=User)
-    def new_user(sender, instance, created, **kwargs):
-        if created:
-            Patient.objects.create(user=instance)
-        instance.patient.save()
+    # @receiver(post_save, sender=User)
+    # def new_user(sender, instance, created, **kwargs):
+    #     if created:
+    #         Patient.objects.create(user=instance)
+    #     instance.patient.save()
 
     def __str__(self):
-        return '%s' % self.name
+        return '%s' % self.user.first_name
 
     class Meta:
         verbose_name = 'Patient'
@@ -87,8 +93,9 @@ class Patient(Profile):
 
 
 class Indicator(models.Model):
-    type = models.CharField(max_length=30)
+    type = models.CharField(max_length=30, null=True, blank=True)
     diseases = models.ManyToManyField(Disease)
+
     class Meta:
         verbose_name = 'Indicator'
         verbose_name_plural = 'Indicators'
@@ -97,7 +104,7 @@ class Indicator(models.Model):
 class Measurement(models.Model):
     type = models.ForeignKey(Indicator, on_delete=models.CASCADE)
     testimony = models.IntegerField()
-    comment = models.TextField(default=None)
+    comment = models.TextField(null=True, blank=True)
     date = models.DateTimeField()
 
 
