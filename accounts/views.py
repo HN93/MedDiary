@@ -1,9 +1,12 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from accounts.form import SignUpFormDoctor
+from django.contrib.auth.forms import AuthenticationForm
 from accounts.form import SignUpFormPatient
 from database.models import Doctor, Patient
+from django.contrib import auth
 
 
 def signup_doctor(request):
@@ -69,3 +72,25 @@ def signup_patient(request):
     else:
         form = SignUpFormPatient()
     return render(request, 'signup.html', {'form': form})
+
+
+def log_in(request):
+    context = {}
+    if request.method == 'POST':
+        username = request.POST.get('username', )
+        password = request.POST.get('password', )
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return HttpResponseRedirect('/')
+        else:
+            login_error = 'User not exist'
+            context = {'login_error': login_error}
+            return render(request, 'login.html', context=context)
+    else:
+        return render(request, 'login.html', {'form': AuthenticationForm})
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('/')

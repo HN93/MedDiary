@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from database.models import DoctorType
+from django.contrib.auth.forms import AuthenticationForm
 from database.models import Doctor
 from database.models import Patient
 
@@ -46,3 +47,4 @@ class SignUpFormPatient(UserCreationForm):
         model = User
         fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'date_of_birthday', 'gender',
                   'city', 'phone_number', 'email', 'height', 'weight')
+

@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^signup_doctor/$', ac_views.signup_doctor, name='signup_doctor'),
     url(r'^signup_patient/$', ac_views.signup_patient, name='signup_patient'),
-    url(r'^index/$', views.View, name='index')
+    url(r'^login/$', ac_views.log_in, name='log_in'),
+    url(r'^logout/$', ac_views.logout, name='logout'),
+    url(r'^index/$', views.View, name='index'),
 
 ]
