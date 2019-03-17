@@ -12,7 +12,6 @@ class Profile(models.Model):
     )
     date_of_birthday = models.DateField('date_of_birthday', null=True, blank=True)
     gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, null=True, blank=True)
-    description = models.TextField('description', blank=True, null=True)
     city = models.CharField('city', max_length=45, null=True, blank=True)
     phone_number = models.IntegerField('phone_number', null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -63,11 +62,6 @@ class Patient(Profile):
     height = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
 
-    # @receiver(post_save, sender=User)
-    # def new_user(sender, instance, created, **kwargs):
-    #     if created:
-    #         Patient.objects.create(user=instance)
-    #     instance.patient.save()
 
     def __str__(self):
         return '%s' % self.user.first_name

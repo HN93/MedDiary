@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-{<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 <body>
 
 {% block content %}
-    <h2>Регистрация</h2>
+    <h2>Вход</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}

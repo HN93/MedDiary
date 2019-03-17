@@ -75,7 +75,6 @@ def signup_patient(request):
 
 
 def log_in(request):
-    context = {}
     if request.method == 'POST':
         username = request.POST.get('username', )
         password = request.POST.get('password', )
@@ -84,9 +83,7 @@ def log_in(request):
             auth.login(request, user)
             return HttpResponseRedirect('/')
         else:
-            login_error = 'User not exist'
-            context = {'login_error': login_error}
-            return render(request, 'login.html', context=context)
+            return render(request, 'login.html', {'form': AuthenticationForm})
     else:
         return render(request, 'login.html', {'form': AuthenticationForm})
 
