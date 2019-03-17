@@ -1,5 +1,3 @@
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
@@ -16,15 +14,8 @@ class Profile(models.Model):
     gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, null=True, blank=True)
     description = models.TextField('description', blank=True, null=True)
     city = models.CharField('city', max_length=45, null=True, blank=True)
-    mail = models.EmailField('mail', max_length=100, null=True, blank=True)
     phone_number = models.IntegerField('phone_number', null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-
-    @receiver(post_save, sender=User)
-    def new_user(sender, instance, created, **kwargs):
-        if created:
-            Patient.objects.create(user=instance)
-        instance.patient.save()
 
     class Meta:
         abstract = True
@@ -44,12 +35,6 @@ class DoctorType(models.Model):
 class Doctor(Profile):
     type = models.ForeignKey(DoctorType, on_delete=models.CASCADE, null=True, blank=True)
     name_of_organisation = models.CharField(max_length=50, null=True, blank=True)
-
-    # @receiver(post_save, sender=User)
-    # def new_user2(sender, instance, created, **kwargs):
-    #     if created:
-    #         Profile.objects.create(user=instance)
-    #     instance.doctor.save()
 
     def __str__(self):
         return '%s' % self.user.first_name

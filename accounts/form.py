@@ -19,7 +19,7 @@ class SignUpFormDoctor(UserCreationForm):
     phone_number = forms.IntegerField()
     name_of_organisation = forms.CharField(max_length=50)
     type = forms.ModelChoiceField(queryset=DoctorType.objects.all())
-    email = forms.EmailField(max_length=254)
+    email = forms.EmailField();
 
     class Meta:
         model = User
