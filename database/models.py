@@ -62,7 +62,6 @@ class Patient(Profile):
     height = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
 
-
     def __str__(self):
         return '%s' % self.user.first_name
 

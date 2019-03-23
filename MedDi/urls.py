@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^logout/$', ac_views.logout, name='logout'),
     url(r'^index/$', views.View, name='index'),
 
+
 ]

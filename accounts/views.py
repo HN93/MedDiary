@@ -91,3 +91,6 @@ def log_in(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
+
+
+
