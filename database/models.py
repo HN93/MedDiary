@@ -18,6 +18,8 @@ class Profile(models.Model):
 
     class Meta:
         abstract = True
+        verbose_name = 'Profile'
+        verbose_name_plural = 'Profiles'
 
 
 class DoctorType(models.Model):
@@ -25,7 +27,7 @@ class DoctorType(models.Model):
 
     class Meta:
         verbose_name = 'DoctorType'
-        verbose_name_plural = 'DoctorType'
+        verbose_name_plural = 'DoctorTypes'
 
     def __str__(self):
         return '%s' % self.name
@@ -85,15 +87,15 @@ class Measurement(models.Model):
     comment = models.TextField(null=True, blank=True)
     date = models.DateTimeField()
 
-
-class Message(models.Model):
-    from_whom = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_whom', default=None)
-    to_whom = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_whom', default=None)
-    message = models.TextField(default=None)
-    pub_date = models.DateTimeField(default=timezone.now)
+    class Meta:
+        verbose_name = 'Measurement'
+        verbose_name_plural = 'Measurements'
 
 
 class MeasurementFrequency(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     indicator = models.ForeignKey(Indicator, on_delete=models.CASCADE)
     frequency = models.IntegerField(default=2)
+
+    verbose_name = 'MeasurementFrequency'
+    verbose_name_plural = 'MeasurementsFrequencies'

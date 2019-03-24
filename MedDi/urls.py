@@ -16,9 +16,11 @@ Including another URLconf
 from django import views
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from accounts import views as ac_views
+from chat import views as chat_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +29,9 @@ urlpatterns = [
     url(r'^login/$', ac_views.log_in, name='log_in'),
     url(r'^logout/$', ac_views.logout, name='logout'),
     url(r'^index/$', views.View, name='index'),
-
+    url(r'^dialogs/$', login_required(chat_views.DialogsView.as_view()), name='dialogs'),
+    url(r'^dialogs/create/(?P<user_id>\d+)/$', login_required(chat_views.CreateDialogView.as_view()),
+        name='create_dialog'),
+    url(r'^dialogs/(?P<chat_id>\d+)/$', login_required(chat_views.MessagesView.as_view()), name='messages'),
 
 ]
