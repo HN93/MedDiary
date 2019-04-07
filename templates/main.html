@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <button class="category btn btn-white" value="">Все</button>
+            </div>
+            {% for category in categories %}
+                <div class="col-sm-3">
+                    <button class="category btn btn-white" value="{{ category.name }}">{{ category.name }}</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row" id="courses">
+            {% include 'catalog/disease.html' %}
+        </div>
+    </div>
+{% endblock content %}

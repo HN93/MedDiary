@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="list-group sidebar">
+        {% for course in courses %}
+            <a href="/catalog/course/{{ course.id }}" class="list-group-item list-group-item-action">
+                <img src="/{{ course.icon }}" height="25px" width="25px">
+                {{ course.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="brd">
+        <h1>{{ course.name }}</h1>
+        <div>{{ course.description|safe }}</div>
+    </div>
+{% endblock content %}

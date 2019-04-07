@@ -85,7 +85,8 @@ class Measurement(models.Model):
     type = models.ForeignKey(Indicator, on_delete=models.CASCADE)
     testimony = models.IntegerField()
     comment = models.TextField(null=True, blank=True)
-    date = models.DateTimeField()
+    date = models.DateField
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'Measurement'
