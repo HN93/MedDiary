@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Показатели</title>
-</head>
-<body>
+{% extends 'index.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+    <div class="">
+        {% for measurement in measurements %}
+            <a>{{ measurement.testimony }}}</a>
+            <a>{{ measurement.date }}}</a>
+            <a>{{ measurement.type }}}</a>
+            <a>{{ measurement.comment }}</a>
+        {% endfor %}
+    </div>
+{% endblock content %}

@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from accounts import views as ac_views
+from calendarOfDiseases import views as cof_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,6 @@ urlpatterns = [
     url(r'^signup_patient/$', ac_views.signup_patient, name='signup_patient'),
     url(r'^login/$', ac_views.log_in, name='log_in'),
     url(r'^logout/$', ac_views.logout, name='logout'),
-    url(r'^index/$', views.View, name='index'),
-
+    url(r'^lk/disease/measurement/create/$', cof_views.measurementCreateView, name='create_measurement'),
+    url(r'^lk/disease([0-9]*)/measurement/(?P<date>\d+)/$', cof_views.MeasurementView.as_view(), name='measurement'),
 ]

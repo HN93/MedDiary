@@ -36,7 +36,7 @@ def signup_doctor(request):
             my_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=my_password)
             login(request, user)
-            return redirect('index')
+            return redirect('lk')
     else:
         form = SignUpFormDoctor()
     return render(request, 'signup.html', {'form': form})
@@ -68,7 +68,7 @@ def signup_patient(request):
             my_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=my_password)
             login(request, user)
-            return redirect('index')
+            return redirect('lk')
     else:
         form = SignUpFormPatient()
     return render(request, 'signup.html', {'form': form})
@@ -91,6 +91,3 @@ def log_in(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
-
-
-
