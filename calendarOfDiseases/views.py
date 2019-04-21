@@ -1,21 +1,11 @@
-import datetime
-from sqlite3.dbapi2 import Date
-
-from django.shortcuts import render, redirect
-
 # Create your views here.
-from django.utils import timezone
-from django.utils.dateformat import DateFormat
+from django.shortcuts import render, redirect
 from django.utils.timezone import now
 from django.views import View
-from django.views.generic import ListView
 
 from calendarOfDiseases.form import MeasurementForm
-from database.models import Measurement, Indicator
+from database.models import Measurement
 from database.models import Patient
-from django.db.models import Count, DateTimeField
-from django.shortcuts import render, redirect
-from django.views import View
 
 dis = 1
 
