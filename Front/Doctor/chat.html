@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Чат с пациентом</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+    <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+
+    $("#profile-img").click(function() {
+        $("#status-options").toggleClass("active");
+    });
+
+    $(".expand-button").click(function() {
+        $("#profile").toggleClass("expanded");
+        $("#contacts").toggleClass("expanded");
+    });
+
+    $("#status-options ul li").click(function() {
+        $("#profile-img").removeClass();
+        $("#status-online").removeClass("active");
+        $("#status-away").removeClass("active");
+        $("#status-busy").removeClass("active");
+        $("#status-offline").removeClass("active");
+        $(this).addClass("active");
+
+        if($("#status-online").hasClass("active")) {
+            $("#profile-img").addClass("online");
+        } else if ($("#status-away").hasClass("active")) {
+            $("#profile-img").addClass("away");
+        } else if ($("#status-busy").hasClass("active")) {
+            $("#profile-img").addClass("busy");
+        } else if ($("#status-offline").hasClass("active")) {
+            $("#profile-img").addClass("offline");
+        } else {
+            $("#profile-img").removeClass();
+        };
+
+        $("#status-options").removeClass("active");
+    });
+
+    function newMessage() {
+        message = $(".message-input input").val();
+        if($.trim(message) == '') {
+            return false;
+        }
+        $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+        $('.message-input input').val(null);
+        $('.contact.active .preview').html('<span>You: </span>' + message);
+        $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+    };
+
+    $('.submit').click(function() {
+        newMessage();
+    });
+
+    $(window).on('keydown', function(e) {
+        if (e.which == 13) {
+            newMessage();
+            return false;
+        }
+    });
+    //# sourceURL=pen.js
+    </script>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+
+    <script src="https://use.typekit.net/hoy3lrg.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+
+    <script src="https://use.typekit.net/hoy3lrg.js"></script>
+    <style>
+
+        .content {
+            float: right;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        @media screen and (max-width: 735px) {
+            #frame .content {
+
+                width: 100%;
+                min-width: 300px !important;
+            }
+        }
+        @media screen and (min-width: 900px) {
+            #frame .content {
+                width: calc(100% - 340px);
+            }
+        }
+
+        .wrapper {
+            display: flex;
+            align-items: stretch;
+        }
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            min-height: 100vh;
+        }
+
+        #sidebar.active {
+            margin-left: -250px;
+        }
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+            }
+            #sidebar.active {
+                margin-left: 0;
+            }
+        }
+
+        .content .contact-profile {
+            width: 100%;
+            height: 115px;
+            line-height: 115px;
+            background: #f5f5f5;
+        }
+        .content .contact-profile p {
+            float: left;
+        }
+        .content .contact-profile .social-media {
+            float: right;
+        }
+        .content .contact-profile .social-media i {
+            margin-left: 14px;
+            cursor: pointer;
+        }
+        .content .contact-profile .social-media i:nth-last-child(1) {
+            margin-right: 20px;
+        }
+        .content .contact-profile .social-media i:hover {
+            color: #A60000;
+        }
+
+        .content .messages {
+            height: auto;
+            min-height: calc(100% - 93px);
+            max-height: calc(100% - 93px);
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        @media screen and (max-width: 735px) {
+            .content .messages {
+                max-height: calc(100% - 105px);
+            }
+        }
+        .content .messages::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+        .content .messages::-webkit-scrollbar-thumb {
+            background-color: #A60000;
+        }
+        .content .messages ul li {
+            display: inline-block;
+            clear: both;
+            float: left;
+            margin: 15px 15px 5px 15px;
+            width: calc(100% - 25px);
+            font-size: 0.9em;
+        }
+        .content .messages ul li:nth-last-child(1) {
+            margin-bottom: 20px;
+        }
+        .content .messages ul li.sent img {
+            margin: 6px 8px 0 0;
+        }
+        .content .messages ul li.sent p {
+            background: #A60000;
+            color: #f5f5f5;
+        }
+        .content .messages ul li.replies img {
+            float: right;
+            margin: 6px 0 0 8px;
+        }
+        .content .messages ul li.replies p {
+            background: #f5f5f5;
+            float: right;
+        }
+        .content .messages ul li img {
+            width: 22px;
+            border-radius: 50%;
+            float: left;
+        }
+        .content .messages ul li p {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 205px;
+            line-height: 130%;
+        }
+        @media screen and (min-width: 735px) {
+            .content .messages ul li p {
+                max-width: 300px;
+            }
+        }
+        .content .message-input {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 99;
+        }
+        .content .message-input .wrap {
+            position: relative;
+        }
+        .content .message-input .wrap input {
+            font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
+            float: left;
+            border: none;
+            width: calc(100% - 90px);
+            padding: 11px 32px 10px 8px;
+            font-size: 0.8em;
+            color: #32465a;
+        }
+        @media screen and (max-width: 735px) {
+            .content .message-input .wrap input {
+                padding: 15px 32px 16px 8px;
+            }
+        }
+        .content .message-input .wrap input:focus {
+            outline: none;
+        }
+        .content .message-input .wrap .attachment {
+            position: absolute;
+            right: 60px;
+            z-index: 4;
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #A60000;
+            opacity: .5;
+            cursor: pointer;
+        }
+        @media screen and (max-width: 735px) {
+            .content .message-input .wrap .attachment {
+                margin-top: 17px;
+                right: 65px;
+            }
+        }
+        .content .message-input .wrap .attachment:hover {
+            opacity: 1;
+            background: #ffffff;
+        }
+        .content .message-input .wrap button {
+            float: right;
+            border: none;
+            width: 50px;
+            padding: 12px 0;
+            cursor: pointer;
+            background: #A60000;
+            color: #f5f5f5;
+        }
+        @media screen and (max-width: 735px) {
+
+        }
+        .content .message-input .wrap button:hover {
+            background: #A60000;
+        }
+        .content .message-input .wrap button:focus {
+            outline: none;
+        }
+    </style>
+<body>
+<div class="wrapper">
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Букарев Богдан Владиславович</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <div class="row">
+                <div class="col-9 ml-0"><p>Список пациентов</p></div>
+                <div class="col-1 mr-0"><p>2</p></div>
+            </div>
+            <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <li>
+                    <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Петя Васечкин</a>
+                    <ul class="collapse list-unstyled" id="patientSubmenu1">
+                        <li>
+                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="graphics.html">График</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="chat.html">Чат</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Вася Петечкин</a>
+                    <ul class="collapse list-unstyled" id="patientSubmenu2">
+                        <li>
+                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="graphics.html">График</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="chat.html">Чат</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </ul>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button type="button" class="btn btn-outline-light mb-lg-1 mt-3" data-toggle="modal" data-target="#exampleModal">Добавить пациента</button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте нового пациента</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Пациент:</label>
+                                        <input type="text" class="form-control" id="recipient-name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <form action="doctor.html">
+                                    <button type="submit" class="btn btn-danger" >Добавить пациента</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row text-center" >
+            <div class="col-12">
+                <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal" data-target="#exampleModal2">Выход</button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2" style="color: #000000">Выход</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="color: #000000">
+                                Вы уверены?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <form action="doctor.html">
+                                    <button type="submit" class="btn btn-danger">Выйти</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-lg-5"><a href="http://bit.ly/2TfB9bj" style="color: white">Помощь</a> </div>
+    </nav>
+    <div class="content">
+        <div class="contact-profile">
+            <h2 class="text-center">Петя Васечкин</h2>
+            <div class="social-media">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="messages py-5">
+            <ul>
+                <li class="sent">
+                    <p>Доктор у меня рак?</p>
+                </li>
+                <li class="replies">
+                    <p>Да</p>
+                </li>
+                <li class="replies">
+                    <p>Мне жаль</p>
+                </li>
+                <li class="sent">
+                    <p>Вы шутите?</p>
+                </li>
+                <li class="replies"><p>No, I told him that.</p>
+                </li>
+                <li class="replies"><p>ha-ha</p>
+                </li>
+                <li class="sent"><p>...</p>
+                </li>
+            </ul>
+        </div>
+        <div class="message-input">
+            <div class="wrap">
+                <input type="text" placeholder="Write your message..."/>
+                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

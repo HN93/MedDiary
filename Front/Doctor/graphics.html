@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>График</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Date', 'Сахар'],
+                ['05.04', 1000],
+                ['06.04', 1170],
+                ['07.04', 660],
+                ['08.04', 1030]
+            ]);
+
+            var options = {
+                title: 'График показателей',
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['#A60000']
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+
+    <style>
+        .wrapper {
+            display: flex;
+            align-items: stretch;
+        }
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            min-height: 100vh;
+        }
+
+        #sidebar.active {
+            margin-left: -250px;
+        }
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+            }
+            #sidebar.active {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!— Sidebar —>
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Букарев Богдан Владиславович</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <div class="row">
+                <div class="col-9 ml-0"><p>Список пациентов</p></div>
+                <div class="col-1 mr-0"><p>2</p></div>
+            </div>
+            <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <li>
+                    <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Петя Васечкин</a>
+                    <ul class="collapse list-unstyled" id="patientSubmenu1">
+                        <li>
+                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="graphics.html">График</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="chat.html">Чат</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Вася Петечкин</a>
+                    <ul class="collapse list-unstyled" id="patientSubmenu2">
+                        <li>
+                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="graphics.html">График</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="chat.html">Чат</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </ul>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button type="button" class="btn btn-outline-light mb-lg-1 mt-3" data-toggle="modal" data-target="#exampleModal">Добавить пациента</button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте нового пациента</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Пациент:</label>
+                                        <input type="text" class="form-control" id="recipient-name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <form action="doctor.html">
+                                    <button type="submit" class="btn btn-danger" >Добавить пациента</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row text-center" >
+            <div class="col-12">
+                <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal" data-target="#exampleModal2">Выход</button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2" style="color: #000000">Выход</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="color: #000000">
+                                Вы уверены?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <form action="doctor.html">
+                                    <button type="submit" class="btn btn-danger">Выйти</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-lg-5"><a href="http://bit.ly/2TfB9bj" style="color: white">Помощь</a> </div>
+    </nav>
+    <div class="container-fluid">
+            <div class="text-lg-right mt-3"><a class=" nav-link" href="preferences.html" style="color: #BF3030">Настройки</a> </div>
+        <div id="curve_chart" style="width: 100%; height: 80%">
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>

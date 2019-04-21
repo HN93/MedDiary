@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о пациенте</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+
+        .mt-10 {
+            margin-top: 6rem!important
+        }
+        .wrapper {
+            display: flex;
+            align-items: stretch;
+        }
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            min-height: 100vh;
+        }
+
+        #sidebar.active {
+            margin-left: -250px;
+        }
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+            }
+            #sidebar.active {
+                margin-left: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Букарев Богдан Владиславович</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <div class="row">
+                <div class="col-9 ml-0"><p>Список болезней</p></div>
+                <div class="col-1 mr-0"><p>2</p></div>
+            </div>
+            <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <li>
+                    <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Болезнь</a>
+                    <ul class="collapse list-unstyled" id="patientSubmenu1">
+                        <li>
+                            <a class="nav-link" href="diseases_info.html">Информация о болезни</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="graphics.html">График</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Болезнь</a>
+                    <ul class="collapse list-unstyled" id="patientSubmenu2">
+                        <li>
+                            <a class="nav-link" href="diseases_info.html">Информация о болезни</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="graphics.html">График</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </ul>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button type="button" class="btn btn-outline-light mb-lg-1 mt-3" data-toggle="modal" data-target="#exampleModal">Добавить болезнь</button>
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте новую болезнь</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Болезнь:</label>
+                                        <input type="text" class="form-control" id="recipient-name">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <form action="Patient.html">
+                                    <button type="submit" class="btn btn-success" >Добавить болезнь</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row text-center" >
+            <div class="col-12">
+                <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal" data-target="#exampleModal2">Выход</button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel2" style="color: #000000">Выход</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="color: #000000">
+                                Вы уверены?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <form action="Patient.html">
+                                    <button type="submit" class="btn btn-success">Выйти</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-lg-5"><a href="http://bit.ly/2TfB9bj" style="color: white">Помощь</a> </div>
+    </nav>
+    <div class="container-fluid  col-md-4 mt-2 mb-3 p-4" >
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="nav nav-pills flex-column flex-sm-row">
+                    <a class="flex-sm-fill text-sm-center nav-link" href="preferences.html" style="color: #259433">Настройки</a>
+                    <a class="flex-sm-fill text-sm-center nav-link active" href="#" style="background-color: #259433">Смена пароля</a>
+                </nav>
+            </div>
+        </div>
+        <div class="row mt-10">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="textInput">Введите старый пароль:</label>
+                    <input type="password" class="form-control" id="textInput">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="passInput2">Введите новый пароль:</label>
+                    <input type="password" class="form-control" id="passInput2">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="passInput3">Повторите пароль:</label>
+                    <input type="password" class="form-control" id="passInput3">
+                </div>
+            </div>
+        </div>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <form action="Patient.html">
+                    <button type="submit" class="btn btn-success btn-sm mb-lg-3 mt-lg-3">Изменить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
