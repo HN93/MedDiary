@@ -82,11 +82,11 @@ class Indicator(models.Model):
 
 
 class Measurement(models.Model):
-    type = models.ForeignKey(Indicator, on_delete=models.CASCADE)
-    testimony = models.IntegerField()
+    indicator = models.ForeignKey(Indicator, on_delete=models.CASCADE, null=True, blank=True)
+    testimony = models.IntegerField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
-    date = models.DateField
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
+    date = models.DateField(null=True, blank=True)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Measurement'

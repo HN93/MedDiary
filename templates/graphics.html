@@ -15,11 +15,12 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Date', 'Сахар'],
-                ['05.04', 1000],
-                ['06.04', 1170],
-                ['07.04', 660],
-                ['08.04', 1030]
+                {% csrf_token %}
+                ['Date', ],
+                {% for measurement in  measurements %}
+                    [{{ measurement.date }}, {{ measurement.testimony}}]
+                {% endfor %}
+
             ]);
 
             var options = {
