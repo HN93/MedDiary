@@ -215,6 +215,7 @@
                     <div class="form-group">
                         <label for="select">Введите показатель</label>
 
+<<<<<<< HEAD:templates/diseases_info.html
                         {% csrf_token %}
                         <select name="type" class="custom-select" id="type">
                             {% for indicator in indicators %}
@@ -225,6 +226,28 @@
                     <div class="mb-3">
                         <input name="testimony" class="form-control" id="testimony" type="number"
                                placeholder="Значение">
+=======
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Добавить комментарий</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Вы уверены?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <form action="Patient.html">
+                                    <button type="submit" class="btn btn-success">Внести</button>
+                                </form>
+                            </div>
+                        </div>
+>>>>>>> 31daa8c085b0774cbf01ea58428f1acab3c07ddf:Front/Patient/diseases_info.html
                     </div>
 
                     <div class="form-group mt-5">
