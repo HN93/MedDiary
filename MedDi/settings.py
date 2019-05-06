@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'database',
     'accounts',
-    'calendarOfDiseases'
+    'calendarOfDiseases',
+    'graphics',
+    'addDisease',
+    'doctor',
 ]
 
 MIDDLEWARE = [

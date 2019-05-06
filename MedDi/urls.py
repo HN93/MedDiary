@@ -21,6 +21,8 @@ from django.urls import path
 
 from accounts import views as ac_views
 from calendarOfDiseases import views as cof_views
+from graphics import views as graph_views
+from addDisease import views as add_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +30,8 @@ urlpatterns = [
     url(r'^signup_patient/$', ac_views.signup_patient, name='signup_patient'),
     url(r'^login/$', ac_views.log_in, name='log_in'),
     url(r'^logout/$', ac_views.logout, name='logout'),
-    url(r'^patient/disease/', cof_views.measurementCreateView, name='create_measurement'),
+    url(r'^patient/disease/measurement', cof_views.measurementCreateView, name='create_measurement'),
+    url(r'^patient/disease/graph', graph_views.getGraph, name='graph'),
+    url(r'^patient/disease/add', add_views.addDisease, name='add')
 
 ]

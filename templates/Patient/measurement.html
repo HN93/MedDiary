@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Информация о выбранном дне</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -15,7 +15,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ru.min.js"></script>
     <style>
+        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
         .wrapper {
             display: flex;
             align-items: stretch;
@@ -53,76 +59,107 @@
             }
         }
 
-    </style>
-    <script>
-        $(function () {
-            $('#datetimepicker3').datetimepicker({locale: 'ru'});
-            $("#setMinDate").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").minDate(moment('05.11.2017', 'DD.MM.YYYY'));
-            });
-            $("#setMaxDate").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").maxDate(moment('25.11.2017', 'DD.MM.YYYY'));
-                $('#datetimepicker3').data("DateTimePicker").date(null);
-            });
-            $("#show").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").show();
-            });
-            $("#hide").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").hide();
-            });
-            $("#disable").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").disable();
-            });
-            $("#enable").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").enable();
-            });
-            $("#setDate").click(function () {
-                $('#datetimepicker3').data("DateTimePicker").date(moment('15.11.2017', 'DD.MM.YYYY'));
-            });
-            $("#getDate").click(function () {
-                alert($('#datetimepicker3').data("DateTimePicker").date());
-            });
-        });
-    </script>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fafafa;
+        }
 
+        p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            font-weight: 300;
+            line-height: 1.7em;
+        }
+
+        a {
+            color: white;
+        }
+
+        a, a:hover, a:focus {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        #sidebar {
+            /* don't forget to add all the previously mentioned styles here too */
+            background: #259433;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: #008110;
+        }
+
+        #sidebar ul.components {
+            padding: 20px 0;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            color: white;
+        }
+
+        #sidebar ul li a:hover {
+            color: #259433;
+            background: #fff;
+        }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: #fff;
+            background: #008110;
+        }
+
+        ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+            background: #259433;
+        }
+
+    </style>
 </head>
 <body>
 <div class="wrapper">
     <!-- Sidebar -->
     <nav id="sidebar">
+        {% csrf_token %}
         <div class="sidebar-header">
-            <h3>Букарев Богдан Владиславович</h3>
+            <h3>{{ patient.user.first_name }} {{ patient.user.last_name }}</h3>
         </div>
         <ul class="list-unstyled components">
             <div class="row">
                 <div class="col-9 ml-0"><p>Список болезней</p></div>
-                <div class="col-1 mr-0"><p>2</p></div>
+                <div class="col-1 mr-0"><p>{{ diseases.count }}</p></div>
             </div>
             <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <li>
-                    <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Болезнь</a>
-                    <ul class="collapse list-unstyled" id="patientSubmenu1">
-                        <li>
-                            <a class="nav-link" href="diseases_info.html">Информация о болезни</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="graphics.html">График</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Болезнь</a>
-                    <ul class="collapse list-unstyled" id="patientSubmenu2">
-                        <li>
-                            <a class="nav-link" href="diseases_info.html">Информация о болезни</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="graphics.html">График</a>
-                        </li>
-                    </ul>
-                </li>
+                {% csrf_token %}
+                {% for disease in diseases %}
+                    <li>
+                        <a class="nav-link" href="#patientSubmenu{{ disease.id }}" data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle">{{ disease.name }}</a>
+                        <ul class="collapse list-unstyled" id="patientSubmenu{{ disease.id }}">
+                            <li>
+                                <a class="nav-link" href="/patient/disease/measurement?disease={{ disease.id }}">Информация
+                                    о
+                                    болезни</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="/patient/disease/graph?disease={{ disease.id }}">График</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
             </div>
         </ul>
         <div class="form-row text-center">
@@ -130,37 +167,6 @@
                 <button type="button" class="btn btn-outline-light mb-lg-1 mt-3" data-toggle="modal"
                         data-target="#exampleModal">Добавить болезнь
                 </button>
-
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте новую
-                                    болезнь</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Болезнь:</label>
-                                        <input type="text" class="form-control" id="recipient-name">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                                <form action="Patient.html">
-                                    <button type="submit" class="btn btn-success">Добавить болезнь</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="form-row text-center">
@@ -168,7 +174,6 @@
                 <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal"
                         data-target="#exampleModal2">Выход
                 </button>
-
 
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
@@ -198,24 +203,25 @@
     </nav>
     <div class="container-fluid">
         <div class="col align-self-end">
-            <div class="text-lg-right mt-3"><a class=" nav-link" href="preferences.html" style="color: #259433">Настройки</a>
+            <div class="text-lg-right mt-3"><a class=" nav-link" href="/preferences"
+                                               style="color: #259433">Настройки</a>
             </div>
-            <div class="col-md-2">
-                <div class="form-group" method="post">
-                    <label for="dayInput">Выберете день:</label>
-                    <input name="date" type="date" class="form-control" id="date" method="post"
-                           action="diseases_info.html">
+            <form class="form-group" method="post">
+                <div class="col-md-2">
+                    <label for="dayInput">Выберите день:</label>
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type="text" name="date" class="form-control" id="date">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="text-center">
-                <h5 class="mt-5">Информация о болезни</h5>
-            </div>
-            <div class="col-md-12">
-                <form class="form-group" method="post">
+                <div class="text-center">
+                    <h5 class="mt-5">Информация о болезни</h5>
+                </div>
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="select">Введите показатель</label>
-
-                        <<<<<<< HEAD:templates/diseases_info.html
                         {% csrf_token %}
                         <select name="type" class="custom-select" id="type">
                             {% for indicator in indicators %}
@@ -226,7 +232,11 @@
                     <div class="mb-3">
                         <input name="testimony" class="form-control" id="testimony" type="number"
                                placeholder="Значение">
-                        =======
+                        <div class="form-group mt-5">
+                            <label for="commentInput">Комментарий по самочувствию</label>
+                            <textarea name="comment" type="text" class="form-control" id="comment"> </textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Ввести</button>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -249,21 +259,57 @@
                                         </form>
                                     </div>
                                 </div>
-                                >>>>>>> 31daa8c085b0774cbf01ea58428f1acab3c07ddf:Front/Patient/diseases_info.html
                             </div>
-
-                            <div class="form-group mt-5">
-                                <label for="commentInput">Комментарий по самочувствию</label>
-                                <textarea name="comment" type="text" class="form-control" id="comment"> </textarea>
-                            </div>
-                            <button type="submit" class="btn btn-success">Ввести</button>
                         </div>
                     </div>
-                </form>
+                </div>
+            </form>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте новую
+                                болезнь</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="post" action="add">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    {% csrf_token %}
+                                    <label for="recipient-name" class="col-form-label"
+                                           style="color: #000000;">Болезнь:</label>
+                                    <select name="disease" class="custom-select" id="type">
+                                        {% for disease in all_diseases %}
+                                            <option value={{ disease.id }}>{{ disease.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                                <button type="submit" class="btn btn-success">Добавить болезнь</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
+
+<script>
+    $(function () {
+        $('.date').datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'ru'
+        });
+    });
+</script>
 </body>
 </html>

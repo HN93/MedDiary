@@ -10,6 +10,7 @@ class Profile(models.Model):
         (MALE, 'Male'),
         (FEMALE, 'Female')
     )
+    second_name = models.CharField('second_name', null=True, blank=True, max_length=50)
     date_of_birthday = models.DateField('date_of_birthday', null=True, blank=True)
     gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, null=True, blank=True)
     city = models.CharField('city', max_length=45, null=True, blank=True)
@@ -36,6 +37,7 @@ class DoctorType(models.Model):
 class Doctor(Profile):
     type = models.ForeignKey(DoctorType, on_delete=models.CASCADE, null=True, blank=True)
     name_of_organisation = models.CharField(max_length=50, null=True, blank=True)
+    license = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.user.first_name
@@ -63,6 +65,8 @@ class Patient(Profile):
     doctors = models.ManyToManyField(Doctor, null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
+    dms = models.IntegerField(null=True, blank=True)
+    oms = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.user.first_name

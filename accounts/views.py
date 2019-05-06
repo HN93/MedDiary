@@ -9,6 +9,14 @@ from database.models import Doctor, Patient
 from django.contrib import auth
 
 
+def signup(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        User.objects.create_user(username=username, password=password, email=email)
+
+
 def signup_doctor(request):
     if request.method == 'POST':
         form = SignUpFormDoctor(request.POST)
