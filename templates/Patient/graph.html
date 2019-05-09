@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>График</title>
-    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -16,19 +15,28 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    {% csrf_token %}
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                {% csrf_token %}
-                ['Date',],
-                {% for measurement in  measurements %}
-                    [{{ measurement.date }}, {{ measurement.testimony}}]
-                {% endfor %}
+                    ['Date' {% for indicator in indicators %}
+                        ,'{{indicator.type }}'
+                    {% endfor %}]
+                    {% for k in array %},[
+                        {% for l in k|slice:":1"%}
+                            '{{ l }}'
+                        {% endfor %}
+                        {% for l in k|slice:"1:"%}
+                            ,{{ l }}
+                        {% endfor %}
+                    ]
+                    {% endfor %}
+                ]
+            )
 
-            ]);
 
             var options = {
                 title: 'График показателей',

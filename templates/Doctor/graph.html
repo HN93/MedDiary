@@ -22,12 +22,20 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Date', 'Сахар'],
-                ['05.04', 1000],
-                ['06.04', 1170],
-                ['07.04', 660],
-                ['08.04', 1030]
-            ]);
+                    ['Date' {% for indicator in indicators %}
+                        ,'{{indicator.type }}'
+                    {% endfor %}]
+                    {% for k in array %},[
+                        {% for l in k|slice:":1"%}
+                            '{{ l }}'
+                        {% endfor %}
+                        {% for l in k|slice:"1:"%}
+                            ,{{ l }}
+                        {% endfor %}
+                    ]
+                    {% endfor %}
+                ]
+            )
 
             var options = {
                 title: 'График показателей',
@@ -43,6 +51,76 @@
     </script>
 
     <style>
+        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fafafa;
+        }
+
+        p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            font-weight: 300;
+            line-height: 1.7em;
+        }
+
+        a {
+            color: white;
+        }
+
+        a, a:hover, a:focus {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        #sidebar {
+            /* don't forget to add all the previously mentioned styles here too */
+            background: #BF3030;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: #A60000;
+        }
+
+        #sidebar ul.components {
+            padding: 20px 0;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            color: white;
+        }
+
+        #sidebar ul li a:hover {
+            color: #BF3030;
+            background: #fff;
+        }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: #fff;
+            background: #A60000;
+        }
+
+        ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+            background: #BF3030;
+        }
+
         .wrapper {
             display: flex;
             align-items: stretch;
@@ -86,44 +164,33 @@
     <!— Sidebar —>
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h3>Букарев Богдан Владиславович</h3>
+            {% csrf_token %}
+            <h3>{{ doctor.first_name }} {{ doctor.last_name }}</h3>
         </div>
         <ul class="list-unstyled components">
             <div class="row">
                 <div class="col-9 ml-0"><p>Список пациентов</p></div>
-                <div class="col-1 mr-0"><p>2</p></div>
+                <div class="col-1 mr-0"><p>{{ patients.count }}</p></div>
             </div>
             <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <li>
-                    <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Петя Васечкин</a>
-                    <ul class="collapse list-unstyled" id="patientSubmenu1">
-                        <li>
-                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="graphics.html">График</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="chat.html">Чат</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Вася Петечкин</a>
-                    <ul class="collapse list-unstyled" id="patientSubmenu2">
-                        <li>
-                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="graphics.html">График</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="chat.html">Чат</a>
-                        </li>
-                    </ul>
-                </li>
+                {% csrf_token %}
+                {% for p in patients %}
+                    <li>
+                        <a class="nav-link" href="#patientSubmenu{{ p.id }}" data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle">{{ p.first_name }} {{ p.last_name }}</a>
+                        <ul class="collapse list-unstyled" id="patientSubmenu{{ p.id }}">
+                            <li>
+                                <a class="nav-link" href="info?patient={{ p.id }}">Информация о
+                                    пациенте</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="graph?patient={{ p.id }}">График</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
+
             </div>
         </ul>
         <div class="form-row text-center">
@@ -155,7 +222,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                                <form action="doctor.html">
+                                <form action="add">
                                     <button type="submit" class="btn btn-danger">Добавить пациента</button>
                                 </form>
                             </div>

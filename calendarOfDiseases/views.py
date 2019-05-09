@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.views import View
-from database.models import Measurement, Indicator, Disease, MeasurementFrequency
+from database.models import Measurement, Indicator, Disease, Doctor
 from database.models import Patient
 
 
@@ -15,18 +15,32 @@ def measurementCreateView(request):
         testimony = request.POST.get("testimony")
         comment = request.POST.get("comment")
         patient = Patient.objects.get(user=request.user)
-        mf = MeasurementFrequency.objects.get(patient=patient, indicator=indicator)
-        if (Measurement.objects.filter(date=date, indicator=indicator, patient=patient).count() < mf.frequency):
+        if not Measurement.objects.filter(date=date, indicator=indicator, patient=patient).exists():
             measurement = Measurement.objects.create(indicator=indicator, patient=patient, testimony=testimony,
                                                      comment=comment, date=date)
             measurement.save()
 
         else:
             measurement = Measurement.objects.filter(date=date, indicator=indicator, patient=patient).last()
-            measurement.indicator = indicator
+            measurement.testimony = testimony
+            measurement.comment = comment
             measurement.save()
     return render(request, 'Patient/measurement.html', {
         'indicators': indicators,
         'diseases': Disease.objects.filter(patient__user=request.user),
         'patient': Patient.objects.get(user=request.user),
         'all_diseases': Disease.objects.exclude(patient__user=request.user), })
+
+
+def addDoctorComment(request):
+    patient = request.GET.get('patient')
+    doctor = Doctor.objects.filter(id=request.user.id)
+    patients = Patient.objects.filter(doctors__in=doctor)
+
+    if request.method == "POST":
+        comment = request.POST.get("comment")
+        date = request.POST.get("date")
+        measurement = Measurement.objects.get(date=date, patient=patient, indicator__diseases__doctorType__in=doctor)
+        measurement.doctor_comment = comment
+        measurement.save()
+    return redirect('/doctor')

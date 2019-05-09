@@ -17,9 +17,9 @@ def addPatient(request):
     else:
         patient_full_name = str(request.GET.get("s"))
         pfn = patient_full_name.split(' ')
-        patients = Patient.objects.filter((Q(user__first_name__icontains=pfn[0]) | Q(user__last_name__icontains=pfn[0]))
-                                          & (Q(user__first_name__icontains=pfn[1]) | Q(
-            user__last_name__icontains=pfn[0])))
+        patients = Patient.objects.filter((Q(user__first_name=pfn[0]) | Q(user__last_name=pfn[0]))
+                                          & (Q(user__first_name=pfn[1]) | Q(
+            user__last_name=pfn[0])))
         return render(request, 'Doctor/patient_info.html', {
             'patients': patients
         })
@@ -27,6 +27,11 @@ def addPatient(request):
 
 def getPatientInfo(request):
     if request.method == "GET":
-        doctor = Doctor.objects.get(user=request.user)
+        doctor = Doctor.objects.filter(user=request.user)
         patient = request.GET.get("patient")
-        disease = request.GET.get()
+        patients = Patient.objects.filter(doctors__in=doctor)
+    return render(request, 'Doctor/patient_info.html', {
+        'patients': patients,
+        'patient': patient,
+        'doctor': doctor,
+    })

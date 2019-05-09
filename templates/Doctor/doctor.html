@@ -4,46 +4,126 @@
     <meta charset="UTF-8">
     <title>Информация о враче</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
     <style>
-    .wrapper {
-        display: flex;
-        align-items: stretch;
-    }
-    #sidebar {
-        min-width: 250px;
-        max-width: 250px;
-        min-height: 100vh;
-    }
+        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-    #sidebar.active {
-        margin-left: -250px;
-    }
 
-    a[data-toggle="collapse"] {
-        position: relative;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fafafa;
+        }
 
-    .dropdown-toggle::after {
-        display: block;
-        position: absolute;
-        top: 50%;
-        right: 20px;
-        transform: translateY(-50%);
-    }
-    @media (max-width: 768px) {
+        p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            font-weight: 300;
+            line-height: 1.7em;
+        }
+
+        a {
+            color: white;
+        }
+
+        a, a:hover, a:focus {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
         #sidebar {
+            /* don't forget to add all the previously mentioned styles here too */
+            background: #BF3030;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: #A60000;
+        }
+
+        #sidebar ul.components {
+            padding: 20px 0;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            color: white;
+        }
+
+        #sidebar ul li a:hover {
+            color: #BF3030;
+            background: #fff;
+        }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: #fff;
+            background: #A60000;
+        }
+
+        ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+            background: #BF3030;
+        }
+
+        .wrapper {
+            display: flex;
+            align-items: stretch;
+        }
+
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            min-height: 100vh;
+        }
+
+        #sidebar.active {
             margin-left: -250px;
         }
-        #sidebar.active {
-            margin-left: 0;
-        }
-    }
 
-</style>
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+            }
+
+            #sidebar.active {
+                margin-left: 0;
+            }
+        }
+
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -57,42 +137,39 @@
                 <div class="col-9 ml-0"><p>Список пациентов</p></div>
                 <div class="col-1 mr-0"><p>2</p></div>
             </div>
-        <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <li>
-                <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Петя Васечкин</a>
-                <ul class="collapse list-unstyled" id="patientSubmenu1">
+            <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                {% csrf_token %}
+                {% for p in patients %}
                     <li>
-                        <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
+                        <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false"
+                           class="dropdown-toggle">Петя Васечкин</a>
+                        <ul class="collapse list-unstyled" id="patientSubmenu1">
+                            <li>
+                                <a class="nav-link" href="patient">Информация о пациенте</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="graph.html">График</a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
-                        <a class="nav-link" href="graphics.html">График</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Вася Петечкин</a>
-                <ul class="collapse list-unstyled" id="patientSubmenu2">
-                    <li>
-                        <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="graphics.html">График</a>
-                    </li>
-                </ul>
-            </li>
-        </div>
+                {% endfor %}
+            </div>
         </ul>
         <div class="form-row text-center">
             <div class="col-12">
-                <button type="button" class="btn btn-outline-light mb-lg-1 mt-3" data-toggle="modal" data-target="#exampleModal">Добавить пациента</button>
+                <button type="button" class="btn btn-outline-light mb-lg-1 mt-3" data-toggle="modal"
+                        data-target="#exampleModal">Добавить пациента
+                </button>
 
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте нового пациента</h5>
+                                <h5 class="modal-title" id="exampleModalLabel" style="color: #000000;">Добавьте нового
+                                    пациента</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -108,7 +185,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                                 <form action="doctor.html">
-                                    <button type="submit" class="btn btn-danger" >Добавить пациента</button>
+                                    <button type="submit" class="btn btn-danger">Добавить пациента</button>
                                 </form>
                             </div>
                         </div>
@@ -116,13 +193,16 @@
                 </div>
             </div>
         </div>
-        <div class="form-row text-center" >
+        <div class="form-row text-center">
             <div class="col-12">
-                <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal" data-target="#exampleModal2">Выход</button>
+                <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal"
+                        data-target="#exampleModal2">Выход
+                </button>
 
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -145,11 +225,12 @@
                 </div>
             </div>
         </div>
-        <div class="text-center mb-lg-5"><a href="http://bit.ly/2TfB9bj" style="color: white">Помощь</a> </div>
+        <div class="text-center mb-lg-5"><a href="http://bit.ly/2TfB9bj" style="color: white">Помощь</a></div>
     </nav>
     <div class="container-fluid">
         <div class="col align-self-end">
-            <div class="text-lg-right mt-3"><a class=" nav-link" href="preferences.html" style="color: #BF3030">Настройки</a> </div>
+            <div class="text-lg-right mt-3"><a class=" nav-link" href="preferences.html" style="color: #BF3030">Настройки</a>
+            </div>
         </div>
         <div class="text-center">
             <h5 class="mt-5">Информация о враче</h5>

@@ -91,16 +91,8 @@ class Measurement(models.Model):
     comment = models.TextField(null=True, blank=True)
     date = models.DateField(null=True, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=True)
+    doctor_comment = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Measurement'
         verbose_name_plural = 'Measurements'
-
-
-class MeasurementFrequency(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    indicator = models.ForeignKey(Indicator, on_delete=models.CASCADE)
-    frequency = models.IntegerField(default=2)
-
-    verbose_name = 'MeasurementFrequency'
-    verbose_name_plural = 'MeasurementsFrequencies'
