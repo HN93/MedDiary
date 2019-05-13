@@ -39,7 +39,6 @@ urlpatterns = [
     url(r'^doctor/patient/info', doctor_views.getPatientInfo, name='patient_info'),
     url(r'^doctor/patient/add', doctor_views.addPatient, name='add_patient'),
     url(r'^doctor/patient/graph', graph_views.get_graph_doctor, name='graph'),
-    url(r'^doctor/patient/delete', doctor_views.deletePatient, name='delete_patient'),
     url(r'^patient/profile/', pv.getPatientProfile, name='patient_profile'),
     url(r'^patient/passchange', pv.passchange),
     url(r'^doctor/profile', doctor_views.doctorProfile, name='doctor_profile'),
