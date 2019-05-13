@@ -162,7 +162,7 @@
     <nav id="sidebar">
         <div class="sidebar-header">
             {% csrf_token %}
-            <h3>{{ doctor.first_name }} {{ doctor.last_name }}</h3>
+            <h3>{{ doctor.user.first_name }} {{ doctor.user.last_name }}</h3>
         </div>
         <ul class="list-unstyled components">
             <div class="row">
@@ -175,19 +175,18 @@
                     <li>
                         <a class="nav-link" href="#patientSubmenu{{ p.id }}" data-toggle="collapse"
                            aria-expanded="false"
-                           class="dropdown-toggle">{{ p.first_name }} {{ p.last_name }}</a>
+                           class="dropdown-toggle">{{ p.user.first_name }} {{ p.user.last_name }}</a>
                         <ul class="collapse list-unstyled" id="patientSubmenu{{ p.id }}">
                             <li>
-                                <a class="nav-link" href="info?patient={{ p.id }}">Информация о
+                                <a class="nav-link" href="/doctor/patient/info?patient={{ p.id }}">Информация о
                                     пациенте</a>
                             </li>
                             <li>
-                                <a class="nav-link" href="graph?patient={{ p.id }}">График</a>
+                                <a class="nav-link" href="/doctor/patient/graph?patient={{ p.id }}">График</a>
                             </li>
                         </ul>
                     </li>
                 {% endfor %}
-
             </div>
         </ul>
         <div class="form-row text-center">
@@ -209,20 +208,23 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <form>
+                            <form action="/doctor/patient/add" method="post">
+                                {% csrf_token %}
+                                <div class="modal-body">
+
                                     <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Пациент:</label>
-                                        <input type="text" class="form-control" id="recipient-name">
+                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Введите
+                                            ОМС пациента</label>
+                                        <input type="number" class="form-control" id="recipient-name" name="oms">
                                     </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                                <form action="add">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить
+                                    </button>
                                     <button type="submit" class="btn btn-danger">Добавить пациента</button>
-                                </form>
-                            </div>
+
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -231,6 +233,7 @@
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal"
+
                         data-target="#exampleModal2">Выход
                 </button>
 
@@ -251,7 +254,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                <form action="doctor.html">
+                                <form action="/logout">
                                     <button type="submit" class="btn btn-danger">Выйти</button>
                                 </form>
                             </div>
@@ -263,12 +266,15 @@
     </nav>
     <div class="container-fluid">
         <div class="col align-self-end">
-            <div class="text-lg-right mt-3"><a class=" nav-link" href="preferences" style="color: #BF3030">Настройки</a>
+            <div class="text-lg-right mt-3"><a class="nav-link" href="/doctor/profile"
+                                               style="color: #BF3030">Настройки</a>
             </div>
             <form class="form-group" method="post">
+                {% csrf_token %}
+
                 <div class="col-md-2">
                     <div class="form-group ">
-                        <label for="dayInput">Выберете день:</label>
+                        <label for="dayInput">Выберите день:</label>
                         <input type="date" class="form-control" id="dayInput">
                     </div>
                 </div>
@@ -277,13 +283,11 @@
                 </div>
                 <div class="col-md-12">
                     <div class="form-group mt-5">
-                        <label for="commentInput">Напишите отзыв о пациенте</label>
+                        <label for="commentInput">Оставьте комментарий</label>
                         <textarea type="text" class="form-control" id="commentInput"> </textarea>
+                        <button type="submit" class="btn btn-danger small mt-3 mb-5" id="btn_comment_submit">Добавить
+                        </button>
                     </div>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal1">
-                        Отказаться
-                    </button>
 
 
                     <!-- Modal -->
@@ -302,7 +306,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                    <form action="">
+                                    <form action="/doctor/patient/delete?patient={{ patient.id }}" method="post">
                                         <button type="submit" class="btn btn-danger">Отказаться</button>
                                     </form>
                                 </div>

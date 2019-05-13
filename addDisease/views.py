@@ -10,4 +10,4 @@ def addDisease(request):
         disease = Disease.objects.filter(id=disease)
         patient.diseases.add(disease.first())
         patient.save()
-    return redirect('/patient')
+    return redirect('../profile')

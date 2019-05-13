@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from accounts.form import SignUpFormDoctor
 from django.contrib.auth.forms import AuthenticationForm
 from accounts.form import SignUpFormPatient
-from database.models import Doctor, Patient
+from database.models import Doctor, Patient, DoctorType
 from django.contrib import auth
 
 
@@ -14,72 +14,66 @@ def signup(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.save()
+        user = authenticate(username=user.username, password=password)
+        login(request, user)
+        if (request.POST.get("ifDoctor") is not None):
+            return redirect('signup_doctor')
+        else:
+            return redirect('signup_patient')
+    return render(request, 'sign_up.html')
 
 
 def signup_doctor(request):
+    doctor_types = DoctorType.objects.all()
     if request.method == 'POST':
-        form = SignUpFormDoctor(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            mail = form.cleaned_data['email']
-            User.objects.create_user(username=username, password=password, email=mail)
-            user = User.objects.get(username=username)
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-            date_of_birthday = form.cleaned_data['date_of_birthday']
-            gender = form.cleaned_data['gender']
-            city = form.cleaned_data['city']
-            phone_number = form.cleaned_data['phone_number']
-            name_of_organisation = form.cleaned_data['name_of_organisation']
-            doctor_type = form.cleaned_data['type']
-            doctor = Doctor.objects.create(date_of_birthday=date_of_birthday, gender=gender, city=city,
-                                           phone_number=phone_number, name_of_organisation=name_of_organisation,
-                                           type=doctor_type, user=user)
-            doctor.save()
-            my_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=my_password)
-            login(request, user)
-            return redirect('lk')
-    else:
-        form = SignUpFormDoctor()
-    return render(request, 'signup.html', {'form': form})
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        user = request.user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        license = request.POST.get('license')
+        second_name = request.POST.get('second_name')
+        date_of_birthday = request.POST.get('birthday_date')
+        gender = request.POST.get('gender')
+        city = request.POST.get('city')
+        phone_number = request.POST.get('phone_number')
+        name_of_organisation = request.POST.get('organisation')
+        doctor_type = request.POST.get('type')
+        doctor_type = DoctorType.objects.get(id=doctor_type)
+        doctor = Doctor.objects.create(date_of_birthday=date_of_birthday, gender=gender, city=city,
+                                       phone_number=phone_number, name_of_organisation=name_of_organisation,
+                                       type=doctor_type, user=user, second_name=second_name, license=license)
+        doctor.save()
+        login(request, user)
+        return redirect('../doctor/profile')
+    return render(request, 'Doctor/signup.html', {
+        'doctor_types': doctor_types,
+    })
 
 
 def signup_patient(request):
     if request.method == 'POST':
-        form = SignUpFormPatient(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            mail = form.cleaned_data['email']
-            User.objects.create_user(username=username, password=password, email=mail)
-            user = User.objects.get(username=username)
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-            date_of_birthday = form.cleaned_data['date_of_birthday']
-            gender = form.cleaned_data['gender']
-            city = form.cleaned_data['city']
-            phone_number = form.cleaned_data['phone_number']
-            weight = form.cleaned_data['weight']
-            height = form.cleaned_data['height']
-            patient = Patient.objects.create(date_of_birthday=date_of_birthday, gender=gender, city=city,
-                                             phone_number=phone_number, user=user, weight=weight, height=height)
-            patient.save()
-            my_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=my_password)
-            login(request, user)
-            return redirect('lk')
-    else:
-        form = SignUpFormPatient()
-    return render(request, 'signup.html', {'form': form})
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        user = request.user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        date_of_birthday = request.POST.get('date_of_birthday')
+        gender = request.POST.get('gender')
+        city = request.POST.get('city')
+        phone_number = request.POST.get('phone_number')
+        weight = request.POST.get('weight')
+        height = request.POST.get('height')
+        oms = request.POST.get('oms')
+        patient = Patient.objects.create(date_of_birthday=date_of_birthday, gender=gender, city=city,
+                                         phone_number=phone_number, user=user, weight=weight, height=height, oms=oms)
+        patient.save()
+        return redirect('/patient/profile')
+    return render(request, 'Patient/signup.html')
 
 
 def log_in(request):
@@ -89,13 +83,16 @@ def log_in(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return HttpResponseRedirect('/')
+            if Patient.objects.filter(user=user).count() > 0:
+                return HttpResponseRedirect('/patient/profile')
+            else:
+                return HttpResponseRedirect('/doctor/profile')
         else:
-            return render(request, 'login.html', {'form': AuthenticationForm})
+            return render(request, 'login.html')
     else:
-        return render(request, 'login.html', {'form': AuthenticationForm})
+        return render(request, 'login.html')
 
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/login')

@@ -35,7 +35,6 @@ def measurementCreateView(request):
 def addDoctorComment(request):
     patient = request.GET.get('patient')
     doctor = Doctor.objects.filter(id=request.user.id)
-    patients = Patient.objects.filter(doctors__in=doctor)
 
     if request.method == "POST":
         comment = request.POST.get("comment")

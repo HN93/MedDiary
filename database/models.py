@@ -96,3 +96,18 @@ class Measurement(models.Model):
     class Meta:
         verbose_name = 'Measurement'
         verbose_name_plural = 'Measurements'
+
+
+class ExpectedValue(models.Model):
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDER_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female')
+    )
+    indicator = models.ForeignKey(Indicator, on_delete=models.CASCADE, null=True, blank=True)
+    value = models.IntegerField(null=True, blank=True)
+    weight = models.IntegerField(null=True, blank=True)
+    height = models.IntegerField(null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField('gender', choices=GENDER_CHOICES, max_length=1, null=True, blank=True)

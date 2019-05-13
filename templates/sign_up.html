@@ -19,41 +19,54 @@
 <body>
 <div class="container-fluid col-md-4 mt-5 rounded p-5 border-top border-left border-bottom border-right border-dark">
     <h1 align="center">Регистрация</h1>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="firstNameInput">Придумайте логин:</label>
-                <input type="text" class="form-control" id="firstNameInput">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="emailInput">
+                        Введите Email
+                    </label>
+                    <input type="email" class="form-control" id="emailInput" name="email">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="passInput">Придумайте пароль:</label>
-                <input type="password" class="form-control" id="passInput">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="firstNameInput">Придумайте логин:</label>
+                    <input type="text" class="form-control" id="firstNameInput" name="username">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="passInput2">Подтвердите пароль:</label>
-                <input type="password" class="form-control" id="passInput2">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="passInput">Придумайте пароль:</label>
+                    <input type="password" class="form-control" id="passInput" name="password">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-        <label class="form-check-label" for="defaultCheck1">
-            Я являюсь врачом в MedDiary
-        </label>
-    </div>
-    <div class="form-row text-center">
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-lg mb-lg-3 mt-lg-3">Создать аккаунт</button>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="passInput2">Подтвердите пароль:</label>
+                    <input type="password" class="form-control" id="passInput2" name="password1">
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="ifDoctor">
+            <label class="form-check-label" for="defaultCheck1">
+                Я являюсь врачом в MedDiary
+            </label>
+        </div>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg mb-lg-3 mt-lg-3">Создать аккаунт</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 

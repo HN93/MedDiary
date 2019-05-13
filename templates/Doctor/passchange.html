@@ -135,44 +135,32 @@
     <!-- Sidebar -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h3>Букарев Богдан Владиславович</h3>
+            {% csrf_token %}
+            <h3>{{ doctor.user.first_name }} {{ doctor.user.last_name }}</h3>
         </div>
         <ul class="list-unstyled components">
             <div class="row">
                 <div class="col-9 ml-0"><p>Список пациентов</p></div>
-                <div class="col-1 mr-0"><p>2</p></div>
+                <div class="col-1 mr-0"><p>{{ patients.count }}</p></div>
             </div>
             <div class="nav flex-column" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <li>
-                    <a class="nav-link" href="#patientSubmenu1" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Петя Васечкин</a>
-                    <ul class="collapse list-unstyled" id="patientSubmenu1">
-                        <li>
-                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="graph.html">График</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="chat.html">Чат</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="nav-link" href="#patientSubmenu2" data-toggle="collapse" aria-expanded="false"
-                       class="dropdown-toggle">Вася Петечкин</a>
-                    <ul class="collapse list-unstyled" id="patientSubmenu2">
-                        <li>
-                            <a class="nav-link" href="patient_info.html">Информация о пациенте</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="graph.html">График</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="chat.html">Чат</a>
-                        </li>
-                    </ul>
-                </li>
+                {% csrf_token %}
+                {% for p in patients %}
+                    <li>
+                        <a class="nav-link" href="#patientSubmenu{{ p.id }}" data-toggle="collapse"
+                           aria-expanded="false"
+                           class="dropdown-toggle">{{ p.user.first_name }} {{ p.user.last_name }}</a>
+                        <ul class="collapse list-unstyled" id="patientSubmenu{{ p.id }}">
+                            <li>
+                                <a class="nav-link" href="/doctor/patient/info?patient={{ p.id }}">Информация о
+                                    пациенте</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="/doctor/patient/graph?patient={{ p.id }}">График</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
             </div>
         </ul>
         <div class="form-row text-center">
@@ -194,20 +182,23 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <form>
+                            <form action="/doctor/patient/add" method="post">
+                                {% csrf_token %}
+                                <div class="modal-body">
+
                                     <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Пациент:</label>
-                                        <input type="text" class="form-control" id="recipient-name">
+                                        <label for="recipient-name" class="col-form-label" style="color: #000000;">Введите
+                                            ОМС пациента</label>
+                                        <input type="number" class="form-control" id="recipient-name" name="oms">
                                     </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                                <form action="doctor.html">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить
+                                    </button>
                                     <button type="submit" class="btn btn-danger">Добавить пациента</button>
-                                </form>
-                            </div>
+
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -216,6 +207,7 @@
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-outline-light btn-sm mt-lg-3 mb-lg-3" data-toggle="modal"
+
                         data-target="#exampleModal2">Выход
                 </button>
 
@@ -236,7 +228,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                <form action="doctor.html">
+                                <form action="/logout">
                                     <button type="submit" class="btn btn-danger">Выйти</button>
                                 </form>
                             </div>
@@ -245,13 +237,12 @@
                 </div>
             </div>
         </div>
-        <div class="text-center mb-lg-5"><a href="http://bit.ly/2TfB9bj" style="color: white">Помощь</a></div>
     </nav>
     <div class="container-fluid  col-md-4 mt-2 mb-3 p-4">
         <div class="row">
             <div class="col-md-12">
                 <nav class="nav nav-pills flex-column flex-sm-row">
-                    <a class="flex-sm-fill text-sm-center nav-link" href="preferences.html" style="color: #BF3030">Настройки</a>
+                    <a class="flex-sm-fill text-sm-center nav-link" href="/doctor/profile" style="color: #BF3030">Настройки</a>
                     <a class="flex-sm-fill text-sm-center nav-link active" href="#" style="background-color: #BF3030">Смена
                         пароля</a>
                 </nav>
@@ -261,7 +252,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="textInput">Введите старый пароль:</label>
-                    <input type="password" class="form-control" id="textInput">
+                    <input type="password" class="form-control" id="textInput" name="password">
                 </div>
             </div>
         </div>
@@ -269,7 +260,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="passInput2">Введите новый пароль:</label>
-                    <input type="password" class="form-control" id="passInput2">
+                    <input type="password" class="form-control" id="passInput2" name="password1">
                 </div>
             </div>
         </div>
@@ -278,7 +269,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="passInput3">Повторите пароль:</label>
-                    <input type="password" class="form-control" id="passInput3">
+                    <input type="password" class="form-control" id="passInput3" name="password2">
                 </div>
             </div>
         </div>
