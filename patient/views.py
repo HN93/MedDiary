@@ -32,10 +32,14 @@ def getPatientProfile(request):
         patient.gender = gender
         patient.city = city
         patient.phone_number = phone_number
-        patient.save()
-        print(patient)
-        print(user)
-
+        try:
+            patient.save()
+        except Exception:
+            return render(request, 'Patient/preferences.html', {
+                'patient': patient,
+                'diseases': Disease.objects.filter(patient__user=request.user),
+                'all_diseases': Disease.objects.exclude
+                (patient__user=request.user), })
     return render(request, 'Patient/preferences.html', {
         'patient': patient,
         'diseases': Disease.objects.filter(patient__user=request.user),
@@ -59,7 +63,7 @@ def passchange(request):
                 user = auth.authenticate(username=username, password=password)
                 if user is not None:
                     auth.login(request, user)
-                    return HttpResponseRedirect('/')
+                    return HttpResponseRedirect('/login')
     return render(request, 'Patient/passchange.html', {
         'patient': patient,
         'diseases': Disease.objects.filter(patient__user=request.user),

@@ -1,5 +1,6 @@
 from django.contrib import auth
 from django.db.models import Q
+from django.forms import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -31,21 +32,10 @@ def getPatientInfo(request):
     })
 
 
-def deletePatient(request):
-    patient = Patient.objects.get(id=request.POST.get("patient"))
-    doctor = Doctor.objects.get(user=request.user)
-    patient.doctors.remove(doctor)
-    patient.save()
-    return redirect('/doctor/profile')
-
-
 def doctorProfile(request):
     doctor = Doctor.objects.get(user=request.user)
     doctor2 = Doctor.objects.filter(user=request.user)
     patients = Patient.objects.filter(doctors__in=doctor2)
-    print(request.user.first_name)
-    print(doctor)
-    print(request.user)
     if request.method == 'POST':
         doctor = Doctor.objects.get(user=request.user)
         first_name = request.POST.get("first_name")
@@ -66,7 +56,13 @@ def doctorProfile(request):
         doctor.city = city
         doctor.phone_number = phone_number
         doctor.license = license
-        doctor.save()
+        try:
+            doctor.save()
+        except Exception:
+            return render(request, 'Doctor/preferences.html', {
+                'patients': patients,
+                'doctor': doctor,
+            })
 
     return render(request, 'Doctor/preferences.html', {
         'patients': patients,

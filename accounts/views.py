@@ -15,7 +15,10 @@ def signup(request):
         password = request.POST.get('password')
         email = request.POST.get('email')
         user = User.objects.create_user(username=username, password=password, email=email)
-        user.save()
+        try:
+            user.save()
+        except Exception:
+            return render(request, 'sign_up.html')
         user = authenticate(username=user.username, password=password)
         login(request, user)
         if (request.POST.get("ifDoctor") is not None):
@@ -46,7 +49,13 @@ def signup_doctor(request):
         doctor = Doctor.objects.create(date_of_birthday=date_of_birthday, gender=gender, city=city,
                                        phone_number=phone_number, name_of_organisation=name_of_organisation,
                                        type=doctor_type, user=user, second_name=second_name, license=license)
-        doctor.save()
+        try:
+            doctor.save()
+        except Exception:
+            return render(request, 'Doctor/signup.html', {
+                'doctor_types': doctor_types,
+            })
+
         login(request, user)
         return redirect('../doctor/profile')
     return render(request, 'Doctor/signup.html', {
@@ -71,7 +80,10 @@ def signup_patient(request):
         oms = request.POST.get('oms')
         patient = Patient.objects.create(date_of_birthday=date_of_birthday, gender=gender, city=city,
                                          phone_number=phone_number, user=user, weight=weight, height=height, oms=oms)
-        patient.save()
+        try:
+            patient.save()
+        except Exception:
+            return render(request, 'Patient/signup.html')
         return redirect('/patient/profile')
     return render(request, 'Patient/signup.html')
 
